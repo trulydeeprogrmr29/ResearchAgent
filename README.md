@@ -198,7 +198,7 @@ help(ResearchManager)
 
 ## License
 
-Specify your license here.
+MIT License
 
 ## Contributing
 
