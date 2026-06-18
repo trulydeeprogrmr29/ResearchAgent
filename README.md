@@ -201,7 +201,7 @@ Extend `research_bot/` with new agents or managers following the existing patter
 
 ## License
 
-MIT License - see LICENSE file
+Specify your license here.
 
 ## Contributing
 
