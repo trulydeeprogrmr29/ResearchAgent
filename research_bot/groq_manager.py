@@ -34,7 +34,7 @@ class GroqResearchManager:
         self.client = Groq(api_key=config.groq_api_key)
         self.model = config.planner_model
         
-    async def run(self, query: str) -> None:
+    async def run(self, query: str) -> ResearchReport:
         """Run research on a given query."""
         try:
             logger.info(f"Starting Groq-based research for: {query}")
@@ -48,6 +48,8 @@ class GroqResearchManager:
             print("\n" + "="*80)
             print(report.markdown_report)
             print("="*80 + "\n")
+            
+            return report
             
         except Exception as e:
             logger.error(f"Research failed: {e}")

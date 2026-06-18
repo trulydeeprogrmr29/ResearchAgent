@@ -5,7 +5,7 @@ This package provides agents and tools for conducting comprehensive research
 through automated web searches, planning, and report generation.
 """
 
-from .manager import ResearchManager
+from .groq_manager import GroqResearchManager
 
 __version__ = "0.1.0"
-__all__ = ["ResearchManager"]
+__all__ = ["GroqResearchManager"]

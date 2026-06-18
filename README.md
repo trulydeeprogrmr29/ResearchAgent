@@ -29,7 +29,11 @@ cp .env.example .env
 # Edit .env and add your Groq API key
 
 # 5. Run!
+# Option A: CLI
 python main.py "What are benefits of artificial intelligence?"
+
+# Option B: Streamlit UI
+python -m streamlit run app.py
 ```
 
 ## Project Structure
@@ -38,13 +42,10 @@ python main.py "What are benefits of artificial intelligence?"
 research_bot/
 ├── __init__.py              # Package initialization
 ├── config.py                # Configuration management
-├── groq_manager.py          # Groq-based research orchestration
-└── agents/
-    ├── planner_agent.py     # Search planning agent
-    ├── search_agent.py      # Search execution agent
-    └── writer_agent.py      # Report writing agent
+└── groq_manager.py          # Groq-based research orchestration
 
-main.py                       # Application entry point
+main.py                       # CLI entry point
+app.py                        # Streamlit web UI
 requirements.txt              # Python dependencies
 .env.example                  # Example configuration
 README.md                     # This file
@@ -63,7 +64,6 @@ GROQ_SETUP.md                 # Detailed Groq setup guide
 # LLM Models (default: llama-3.3-70b-versatile)
 PLANNER_MODEL=llama-3.3-70b-versatile
 WRITER_MODEL=llama-3.3-70b-versatile
-SEARCH_MODEL=llama-3.3-70b-versatile
 
 # Search Configuration
 MAX_SEARCHES=20
@@ -82,26 +82,50 @@ See `.env.example` for complete options.
 
 ## Usage
 
-### Basic Usage
+### CLI Usage
 
 ```bash
 python main.py "Your research question"
 ```
 
-### Examples
-
+Examples:
 ```bash
 # Research latest AI trends
 python main.py "What are the latest AI breakthroughs?"
 
 # Verbose output for debugging
 python main.py "Machine learning trends" --verbose
-
-# Alternative syntax
-python main.py --query "Climate change solutions"
 ```
 
-### Output
+### Streamlit UI
+
+```bash
+python -m streamlit run app.py
+```
+
+Opens at http://localhost:8501 with:
+- Interactive query input
+- Real-time progress tracking
+- Beautiful markdown reports
+- Example queries
+
+## How It Works
+
+### Research Pipeline
+
+```
+Query
+  ↓
+[GroqResearchManager] → Generate search plan (5-10 queries)
+  ↓
+                     → Execute searches in parallel
+  ↓
+                     → Summarize findings
+  ↓
+                     → Generate comprehensive report
+  ↓
+Output: Markdown Report
+```
 
 The agent will:
 1. **Plan**: Generate 5-10 relevant search queries
@@ -112,47 +136,12 @@ The agent will:
    - Full structured report
    - Follow-up questions
 
-## How It Works
-
-### Research Pipeline
-
-```
-Query
-  ↓
-[PlannerAgent] → Generate search plan (5-10 queries)
-  ↓
-[SearchAgent] → Execute searches in parallel
-  ↓
-[WriterAgent] → Combine findings into comprehensive report
-  ↓
-Output: Markdown Report
-```
-
-### Agents
-
-**PlannerAgent**
-- Analyzes your query
-- Proposes 5-10 targeted searches
-- Returns: List with search terms and rationale
-
-**SearchAgent**
-- Executes searches (simulated with LLM knowledge)
-- Summarizes findings
-- Returns: Markdown bullet points (≤300 words)
-
-**WriterAgent**
-- Combines all search summaries
-- Creates structured report
-- Generates follow-up questions
-- Returns: Final markdown report
-
 ## Available Groq Models
 
 | Model | Speed | Quality | Best For |
 |-------|-------|---------|----------|
 | `llama-3.3-70b-versatile` | ⚡⚡ Fast | Excellent | **Recommended** |
 | `llama-3.1-8b-instant` | ⚡⚡⚡⚡ Very Fast | Good | Quick queries |
-| `qwen/qwen3-32b` | ⚡⚡⚡ Medium | Good | Alternative |
 
 ## Troubleshooting
 
@@ -165,13 +154,9 @@ Output: Markdown Report
 - Reduce `MAX_SEARCHES` in `.env`
 - Reduce `MAX_CONCURRENT_SEARCHES` in `.env`
 
-**"Model decommissioned"**
-- Update to available models: `llama-3.3-70b-versatile` (recommended)
-- Check all available models: https://console.groq.com/docs/models
-
 **Installation Issues**
 ```bash
-# Verify Python 3.8+
+# Verify Python 3.10+
 python --version
 
 # Reinstall dependencies
@@ -194,10 +179,6 @@ python main.py "Your query" --verbose
 ```
 
 Enables DEBUG logging and full error stack traces.
-
-### Adding Custom Features
-
-Extend `research_bot/` with new agents or managers following the existing pattern.
 
 ## License
 

@@ -7,7 +7,6 @@ import argparse
 import asyncio
 import logging
 import sys
-from pathlib import Path
 
 from research_bot.groq_manager import GroqResearchManager
 from research_bot.config import config
@@ -60,12 +59,6 @@ Examples:
         '--verbose', '-v',
         action='store_true',
         help='Enable verbose output'
-    )
-    
-    parser.add_argument(
-        '--config',
-        type=Path,
-        help='Path to configuration file'
     )
     
     args = parser.parse_args()
